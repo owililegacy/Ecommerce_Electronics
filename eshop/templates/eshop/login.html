@@ -1,9 +1,10 @@
 {% extends "eshop/base.html" %}
 
 {% block title %}Login - Eshop{% endblock %}
+{% block nav %}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-1">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card login-card shadow-lg p-4">
@@ -11,23 +12,24 @@
                     <h2 class="card-title text-center text-orange">🔑 LOGIN</h2>
                     <form method="post">
                         {% csrf_token %}
-                        
+                            {% if form.errors %}
+                                <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded flash-message">
+                                Please enter a correct username and password.</div>
+                            {% endif %}
                         <!-- Username Input -->
                         <div class="form-group mb-3">
                             <label for="id_username" class="form-label text-orange">Username</label>
-                            <input type="text" id="id_username" name="username" 
-                                   class="form-control input-orange" 
-                                   placeholder="Enter your username" required>
+                            <input type="text" id="id_username" name="username" class="form-control input-orange"  placeholder="Enter your username" required>
                         </div>
 
                         <!-- Password Input with Peek Feature -->
                         <div class="form-group mb-3 position-relative">
                             <label for="id_password" class="form-label text-orange">Password</label>
-                            <div class="input-group">
+                            <div class="relative">
                                 <input type="password" id="id_password" name="password" 
                                        class="form-control input-orange" 
                                        placeholder="Enter your password" required>
-                                <span class="input-group-text bg-white border-0" 
+                                <span class="absolute z-[10] top-1/4 right-2"
                                       onclick="togglePasswordVisibility('id_password', 'togglePasswordIcon')" 
                                       style="cursor: pointer;">
                                     <i id="togglePasswordIcon" class="bi bi-eye-slash text-orange"></i>
@@ -37,14 +39,16 @@
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-orange btn-lg w-100 mt-4 text-white shadow">
-                            🚀 Login
+                            Login
                         </button> 
+                        <div class="flex gap-2 mt-3"><p class="text-gray-700">Don't have an account ?</p><a href="/register">Register</a></div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% block footer %}{% endblock %}
 
 <!-- 🔥 JavaScript for Password Toggle -->
 <script>

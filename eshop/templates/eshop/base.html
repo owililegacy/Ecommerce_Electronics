@@ -14,19 +14,20 @@
     <link rel="stylesheet" href="{% static 'css/order.css' %}">
     <link rel="stylesheet" href="{% static 'css/review.css' %}">
     <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     {% bootstrap_css %}
     {% block head %}{% endblock %} 
 </head>
 <body class="d-flex flex-column min-vh-100">
-
+    {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-warning"> 
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'eshop:home' %}">E-SHOP</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collaplse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'eshop:home' %}">Home</a>
@@ -49,7 +50,8 @@
                         </a>
                     </div>
                 </li>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> 
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if user %}
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'eshop:logout' %}">Logout</a>
@@ -62,16 +64,22 @@
                             <a class="nav-link" href="{% url 'eshop:register' %}">Register</a>
                         </li>
                     {% endif %}
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
+    {% endblock %}
+
+    <!-- Django messages go here -->
+    {% include 'eshop/messages.html' %}
 
     <div class="container mt-4 flex-grow-1"> 
         {% block content %}
         {% endblock %}
     </div>
 
+    {% block footer %}
     <footer class="bg-warning text-white text-center py-3 mt-auto shadow-lg">
         <div class="container">
             <p class="footer-text mb-3">&copy; {% now "Y" %} My Ecommerce Site. All rights reserved.</p>
@@ -101,6 +109,7 @@
             </div>
         </div>
     </footer>
+    {% endblock %}
         
     
 
