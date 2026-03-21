@@ -7,14 +7,15 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserLoginForm
 import logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 User = get_user_model()
 
 
-def register_view(request):
+def register_view_prev(request):
     if request.method == "POST":
         logger.debug(f"Incoming request data: {request.POST}")
         data = {
@@ -46,19 +47,83 @@ def register_view(request):
     return render(request, "eshop/register.html", {"form": form})
 
 
+def register_view(request):
+    if request.method == "POST":
+        logger.debug(f"Incoming request data: {request.POST}")
+
+        form = UserRegisterForm(request.POST)
+        logger.info(
+            f"Valid: {form.is_valid()} {form.cleaned_data if form.is_valid() else 'Form invalid'}"
+        )
+
+        if form.is_valid():
+            # Form validation already handles uniqueness checks via clean() method
+            # No need to duplicate database queries here
+            user = form.save()
+            messages.success(request, f"Account created for {user.username}!")
+            # Login user
+            username = request.POST.get('username')
+            user = None
+            if username:
+                user = User.objects.filter(username=username)
+            if user and user.exists():
+                login(request, user.first())
+                return redirect("eshop:home")
+            else:
+                return redirect("eshop:login")
+        else:
+            # Extract and format errors as strings instead of lists
+            for field, errors in form.errors.items():
+                # Get the first error message as a string
+                error_msg = errors[0] if isinstance(errors, list) else str(errors)
+
+                if field == "__all__":
+                    messages.error(request, error_msg)
+                else:
+                    # Get the field label for better readability
+                    field_label = (
+                        form.fields[field].label if field in form.fields else field
+                    )
+                    messages.error(request, f"{field_label}: {error_msg}")
+
+            # Also log the errors for debugging
+            logger.error(f"Form validation errors: {dict(form.errors)}")
+
+    else:
+        form = UserRegisterForm()
+
+    return render(request, "eshop/register.html", {"form": form})
+
+
 def login_view(request):
     if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
+        # data = request.POST.cleaned_data
+        data = {
+            "username": request.POST.get("username"),
+            "password": request.POST.get("password"),
+        }
+        form = AuthenticationForm(request, data=data)
+
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             messages.success(request, "You have been logged in!")
             return redirect("eshop:home")  # Redirect to home page
+        else:
+            if not User.objects.filter(username=data["username"]).exists():
+                form.errors["__all__"] = "User not found"
+            else:
+                form.errors["__all__"] = "Incvalid login credentials."
+
+            # Also log the errors for debugging
+            logger.error(f"Form validation errors: {dict(form.errors)}")
+
     else:
-        form = AuthenticationForm()
+        form = UserLoginForm()
     return render(request, "eshop/login.html", {"form": form})
 
 
+@login_required()
 def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out!")
