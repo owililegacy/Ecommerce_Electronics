@@ -149,7 +149,7 @@
 
     <!-- Modern Footer -->
     {% block footer %}
-    <footer class="bg-gray-900 text-gray-300 mt-auto">
+    <footer class="bg-white/95 dark:bg-gray-900 backdrop-blur-md shadow-md border-t border-gray-200 transition-all duration-300 text-gray-700 dark:text-gray-300 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Brand Section -->
@@ -158,22 +158,22 @@
                         <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
                             <i class="bi bi-lightning-charge-fill text-white text-sm"></i>
                         </div>
-                        <span class="text-xl font-bold text-white">Electronics.Co</span>
+                        <span class="text-xl font-bold text-gray-700 dark:text-white">Electronics.Co</span>
                     </div>
-                    <p class="text-sm text-gray-400 mb-4">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
                         Your premier destination for cutting-edge electronics and gadgets. Quality products, exceptional service.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
+                        <a href="#" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200">
                             <i class="bi bi-facebook text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
+                        <a href="#" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200">
                             <i class="bi bi-twitter-x text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
+                        <a href="#" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200">
                             <i class="bi bi-instagram text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
+                        <a href="#" class="ttext-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200">
                             <i class="bi bi-linkedin text-xl"></i>
                         </a>
                     </div>
@@ -181,32 +181,32 @@
 
                 <!-- Quick Links -->
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+                    <h3 class="text-gray-600 dark:text-white font-semibold mb-4">Quick Links</h3>
                     <ul class="space-y-2">
-                        <li><a href="{% url 'eshop:home' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Home</a></li>
-                        <li><a href="{% url 'eshop:product_list' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Products</a></li>
-                        <li><a href="{% url 'eshop:category_list' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Categories</a></li>
-                        <li><a href="{% url 'eshop:orders_list' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">My Orders</a></li>
+                        <li><a href="{% url 'eshop:home' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">Home</a></li>
+                        <li><a href="{% url 'eshop:product_list' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 duration-200 text-sm">Products</a></li>
+                        <li><a href="{% url 'eshop:category_list' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">Categories</a></li>
+                        <li><a href="{% url 'eshop:orders_list' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">My Orders</a></li>
                     </ul>
                 </div>
 
                 <!-- Support -->
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Support</h3>
+                    <h3 class="text-gray-600 dark:text-white font-semibold mb-4">Support</h3>
                     <ul class="space-y-2">
-                        <li><a href="{% url 'eshop:about' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">About Us</a></li>
-                        <li><a href="{% url 'eshop:contact' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Contact</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Shipping Info</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Returns Policy</a></li>
+                        <li><a href="{% url 'eshop:about' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">About Us</a></li>
+                        <li><a href="{% url 'eshop:contact' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">Contact</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">Shipping Info</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">Returns Policy</a></li>
                     </ul>
                 </div>
 
                 <!-- Reviews -->
                 <div>
-                    <h3 class="text-white font-semibold mb-4">Reviews</h3>
+                    <h3 class="text-gray-600 dark:text-white font-semibold mb-4">Reviews</h3>
                     <ul class="space-y-2">
-                        <li><a href="{% url 'eshop:all_reviews' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Customer Reviews</a></li>
-                        <li><a href="{% url 'eshop:choose_product_for_review' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Write a Review</a></li>
+                        <li><a href="{% url 'eshop:all_reviews' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">Customer Reviews</a></li>
+                        <li><a href="{% url 'eshop:choose_product_for_review' %}" class="text-gray-600 dark:text-gray-400 dark:hover:textorange-600 hover:text-orange-500 transition-colors duration-200 text-sm">Write a Review</a></li>
                         <li class="text-gray-500 text-sm mt-2">
                             <i class="bi bi-star-fill text-orange-500"></i>
                             <i class="bi bi-star-fill text-orange-500"></i>
@@ -221,7 +221,7 @@
 
             <!-- Bottom Bar -->
             <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-gray-600 dark:text-gray-500">
                     &copy; {% now "Y" %} Electronics.Co. All rights reserved. |
                     <a href="#" class="hover:text-orange-500 transition-colors">Privacy Policy</a> |
                     <a href="#" class="hover:text-orange-500 transition-colors">Terms of Service</a>
