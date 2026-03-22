@@ -8,14 +8,25 @@ old_conn = sqlite3.connect("old_db_backup.sqlite3")
 old_conn.row_factory = sqlite3.Row
 
 # Get products
-cursor = old_conn.execute("""
-    SELECT p.name, p.slug, p.description, p.price, p.stock, p.image, c.name as category_name
-    FROM eshop_product p
-    LEFT JOIN eshop_category c ON p.category_id = c.id
-""")
+products =[]
+try:
+    cursor = old_conn.execute("""
+        SELECT p.name, p.slug, p.description, p.price, p.stock, p.image, c.name as category_name
+        FROM eshop_product p
+        LEFT JOIN eshop_category c ON p.category_id = c.id
+    """)
+    products = [dict(row) for row in cursor.fetchall()]
+    old_conn.close()
+except Exception as e:
+    import json
+    with open("products_export.json", "r") as f:
+        products = json.load(f)
+    print(f"Error fetching from old DB: {e}. Loaded from JSON backup.")
+    print(f"Products loaded: {len(products)}")
 
-products = [dict(row) for row in cursor.fetchall()]
-old_conn.close()
+if len(products) == 0:
+    print("No products to import.")
+    exit()
 
 # Create categories and import products
 for product_data in products:
