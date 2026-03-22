@@ -31,10 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # my apps
-    "eshop",
-    "django_bootstrap5",
-    "django_browser_reload",
     # django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -42,7 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_browser_reload",
+    # my apps
+    "django_bootstrap5",
+    "eshop",
 ]
+
+# AUTH_USER_MODEL = "eshop.EshopUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
