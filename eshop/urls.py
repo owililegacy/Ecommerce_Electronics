@@ -26,7 +26,6 @@ urlpatterns = [
         views.newsletter_toggle_view,
         name="toggle_newsletter_profile",
     ),
-    path("profile/update/", views.update_profile_view, name="update_profile"),
     # Products
     path("products/", views.product_list, name="product_list"),
     path("products/<slug:slug>/", views.product_detail, name="product_detail"),
