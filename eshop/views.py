@@ -130,6 +130,15 @@ def logout_view(request):
     return redirect("eshop:home")  # Redirect to home page after logout
 
 
+@login_required()
+def profile(request):
+    user = User.objects.filter(username=request.user)
+    if user.exists():
+        profile = user.first()  # .serialize()
+        return render(request, 'eshop/profile.html', {'profile': profile})
+    return redirect("eshop:home")
+
+
 def home(request):
     categories = Category.objects.all()
     return render(request, "eshop/home.html", {"categories": categories})

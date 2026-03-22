@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "tailwind:build": "NODE_ENV=production npx tailwindcss -i ./static/css/config.css -o ./static/css/global.css --minify",
-    "tailwind:watch": "npx tailwindcss -i ./static/css/config.css -o ./static/css/global.css"
+    "tailwind:watch": "npx tailwindcss -i ./static/css/config.css -o ./static/css/global.css --watch"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
