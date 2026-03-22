@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 
@@ -49,7 +50,7 @@ class EshopUser(AbstractUser):
     is_active = models.BooleanField(default=True, verbose_name="Active")
 
     class Meta:
-        app_label = "Users"
+        # app_label = "Users"
         db_table = "users"
         verbose_name = "User"
         verbose_name_plural = "Users"
@@ -152,7 +153,7 @@ class Product(models.Model):
 
 class Cart(models.Model):
     user = models.OneToOneField(
-        "eshop.EshopUser", on_delete=models.CASCADE, related_name="cart"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart"
     )  # One cart per user
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -175,7 +176,7 @@ class CartItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(
-        "eshop.EshopUser", on_delete=models.CASCADE, related_name="orders"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
     )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -224,7 +225,7 @@ class ProductReview(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="reviews"
     )
-    user = models.ForeignKey("eshop.EshopUser", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     comment = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

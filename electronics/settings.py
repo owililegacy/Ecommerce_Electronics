@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "eshop",
 ]
 
-# AUTH_USER_MODEL = "eshop.EshopUser"
+AUTH_USER_MODEL = "eshop.EshopUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
