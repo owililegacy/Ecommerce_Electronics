@@ -1,52 +1,39 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Category, Product, CartItem, Order, OrderItem, ProductReview, Cart
+from .models import (
+    Category,
+    Product,
+    CartItem,
+    Order,
+    OrderItem,
+    ProductReview,
+    Cart,
+    EshopUser,
+    Review,
+)
 from django.http import Http404
 from .forms import ReviewForm, OrderForm
+
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import login, logout, get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UserRegisterForm, UserLoginForm
+from django.contrib.auth import update_session_auth_hash
+
+# from django.urls import reverse
+# from django.utils import timezone
+# from django.db.models import Count, Avg
 import logging
+
+from .forms import UserProfileUpdateForm, CustomPasswordChangeForm
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 User = get_user_model()
 
 
-def register_view_prev(request):
-    if request.method == "POST":
-        logger.debug(f"Incoming request data: {request.POST}")
-        data = {
-            "username": request.POST.get("username"),
-            "email": request.POST.get("email"),
-            "password1": request.POST.get("password1"),
-            "password2": request.POST.get("password2"),
-        }
-        form = UserRegisterForm(data)
-        logger.info(f"Valid: {form.is_valid()} {form.cleaned_data}")
-        if form.is_valid():
-            if User.objects.filter(username=data["username"]).exists():
-                messages.error(
-                    request, f"User with username: {data['username']} already exists."
-                )
-                return render(request, "eshop/register.html", {"form": form})
-            if data.get("email", None):
-                if User.objects.filter(username=data["username"]).exists():
-                    messages.error(
-                        request,
-                        f"Account with email: {data['email']} already exists.",
-                    )
-                    return render(request, "eshop/register.html", {"form": form})
-            form.save()
-            messages.success(request, f"Account created for {data['username']}!")
-            return redirect("eshop:login")  # Redirect to login page after registration
-    else:
-        form = UserRegisterForm()
-    return render(request, "eshop/register.html", {"form": form})
-
-
+@csrf_protect
 def register_view(request):
     if request.method == "POST":
         logger.debug(f"Incoming request data: {request.POST}")
@@ -62,7 +49,7 @@ def register_view(request):
             user = form.save()
             messages.success(request, f"Account created for {user.username}!")
             # Login user
-            username = request.POST.get('username')
+            username = request.POST.get("username")
             user = None
             if username:
                 user = User.objects.filter(username=username)
@@ -95,6 +82,7 @@ def register_view(request):
     return render(request, "eshop/register.html", {"form": form})
 
 
+@csrf_protect
 def login_view(request):
     if request.method == "POST":
         # data = request.POST.cleaned_data
@@ -123,20 +111,148 @@ def login_view(request):
     return render(request, "eshop/login.html", {"form": form})
 
 
-@login_required()
+@login_required
 def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out!")
     return redirect("eshop:home")  # Redirect to home page after logout
 
 
-@login_required()
-def profile(request):
-    user = User.objects.filter(username=request.user)
-    if user.exists():
-        profile = user.first()  # .serialize()
-        return render(request, 'eshop/profile.html', {'profile': profile})
-    return redirect("eshop:home")
+@login_required
+def profile_view(request):
+    """
+    Display user profile with recent orders and reviews
+    """
+    user = request.user
+
+    # Get user's orders
+    recent_orders = (
+        Order.objects.filter(user=user).order_by("-created_at")[:5]
+        if hasattr(user, "order_set")
+        else []
+    )
+
+    # Get user's reviews
+    recent_reviews = (
+        Review.objects.filter(user=user).order_by("-created_at")[:5]
+        if hasattr(user, "review_set")
+        else []
+    )
+
+    # Calculate statistics
+    total_orders = (
+        Order.objects.filter(user=user).count() if hasattr(user, "order_set") else 0
+    )
+    total_reviews = (
+        Review.objects.filter(user=user).count() if hasattr(user, "review_set") else 0
+    )
+
+    context = {
+        "profile": user,
+        "recent_orders": recent_orders,
+        "recent_reviews": recent_reviews,
+        "total_orders": total_orders,
+        "total_reviews": total_reviews,
+    }
+
+    return render(request, "eshop/profile.html", context)
+
+
+@login_required
+def update_profile_view(request):
+    """
+    Handle profile update
+    """
+    if request.method == "POST":
+        form = UserProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully!")
+            return redirect("eshop:profile")
+        else:
+            # Add form errors to messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.title()}: {error}")
+            return redirect("eshop:profile")
+
+    return redirect("eshop:profile")
+
+
+@login_required
+def change_password_view(request):
+    """
+    Handle password change
+    """
+    if request.method == "POST":
+        form = CustomPasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            # Update session to keep user logged in
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password was successfully updated!")
+            return redirect("eshop:profile")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
+            return redirect("eshop:profile")
+
+    return redirect("eshop:profile")
+
+
+@login_required
+def delete_profile_image_view(request):
+    """
+    Delete user profile image
+    """
+    if request.method == "POST":
+        if request.user.profile_image:
+            request.user.profile_image.delete()
+            request.user.save()
+            messages.success(request, "Profile image deleted successfully!")
+        else:
+            messages.info(request, "No profile image to delete.")
+
+    return redirect("eshop:profile")
+
+
+@login_required
+def deactivate_account_view(request):
+    """
+    Deactivate user account
+    """
+    if request.method == "POST":
+        user = request.user
+        user.is_active = False
+        user.save()
+        messages.success(
+            request, "Your account has been deactivated. We're sad to see you go!"
+        )
+        return redirect("eshop:home")
+
+    return redirect("eshop:profile")
+
+
+@login_required
+def newsletter_toggle_view(request):
+    """
+    Toggle newsletter subscription
+    """
+    if request.method == "POST":
+        request.user.newsletter_subscribed = not request.user.newsletter_subscribed
+        request.user.save()
+
+        status = (
+            "subscribed to"
+            if request.user.newsletter_subscribed
+            else "unsubscribed from"
+        )
+        messages.success(request, f"You have successfully {status} our newsletter!")
+
+    return redirect("eshop:profile")
 
 
 def home(request):
