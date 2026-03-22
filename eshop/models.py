@@ -5,6 +5,26 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
 
+class EshopUser(User):
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        app_label = "Users"
+        db_table = "Users"
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+
+    def serialize(self):
+        data = {
+            "username": self.username,
+            "email": self.email,
+            "created_at": self.date_joined,
+        }
+        return data
+
+
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
