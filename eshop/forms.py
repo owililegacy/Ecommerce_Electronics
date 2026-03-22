@@ -1,94 +1,178 @@
 from django import forms
 from .models import Order, ProductReview
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from .models import EshopUser
+import re
 
 
 class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField()
+    """
+    Registration form for new users
+    """
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email'
+        })
+    )
+
+    phone_number = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': '+1234567890'
+        })
+    )
 
     class Meta:
-        model = User
-        fields = ["username", "email", "password1", "password2"]
+        model = EshopUser
+        fields = ['username', 'email', 'password1', 'password2', 'phone_number']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # Customize field labels for better UX
-        self.fields["username"].label = "Username"
-        self.fields["email"].label = "Email Address"
-        self.fields["password1"].label = "Password"
-        self.fields["password2"].label = "Confirm Password"
-
-        # Add CSS classes and placeholders
         for field_name, field in self.fields.items():
-            field.widget.attrs.update(
-                {"class": "form-control w-100", "placeholder": field.label}
-            )
+            field.widget.attrs.update({
+                'class': 'form-control w-100',
+                'placeholder': field.label
+            })
 
-            # Remove default help texts for cleaner look
-            if field_name in ["password1", "password2"]:
-                field.help_text = None
+        # Customize labels
+        self.fields['username'].label = "Username"
+        self.fields['email'].label = "Email Address"
+        self.fields['password1'].label = "Password"
+        self.fields['password2'].label = "Confirm Password"
+        self.fields['phone_number'].label = "Phone Number (Optional)"
 
-    def clean(self):
-        """Custom validation with single, clear error messages per field"""
-        cleaned_data = super().clean()
-        errors = {}
+    def clean_email(self):
+        """
+        Validate email uniqueness
+        """
+        email = self.cleaned_data.get('email')
+        if EshopUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already registered.")
+        return email
 
-        # Username validation
-        username = cleaned_data.get("username")
-        if username:
-            if len(username) < 3:
-                errors["username"] = "Username must be at least 3 characters long."
-            elif User.objects.filter(username=username).exists():
-                errors["username"] = "This username is already taken."
+    def clean_username(self):
+        """
+        Validate username
+        """
+        username = self.cleaned_data.get('username')
+        if len(username) < 3:
+            raise forms.ValidationError("Username must be at least 3 characters long.")
+        if EshopUser.objects.filter(username=username).exists():
+            raise forms.ValidationError("This username is already taken.")
+        return username
 
-        # Email validation
-        email = cleaned_data.get("email")
-        if email:
-            if User.objects.filter(email=email).exists():
-                errors["email"] = "This email is already registered."
+    def clean_password1(self):
+        """
+        Validate password strength
+        """
+        password = self.cleaned_data.get('password1')
+        if password:
+            if len(password) < 8:
+                raise forms.ValidationError("Password must be at least 8 characters long.")
+            if not re.search(r'[A-Z]', password):
+                raise forms.ValidationError("Password must contain at least one uppercase letter.")
+            if not re.search(r'[a-z]', password):
+                raise forms.ValidationError("Password must contain at least one lowercase letter.")
+            if not re.search(r'\d', password):
+                raise forms.ValidationError("Password must contain at least one number.")
+        return password
 
-        # Password validation
-        password1 = cleaned_data.get("password1")
-        password2 = cleaned_data.get("password2")
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
 
-        if password1 and password2:
-            if password1 != password2:
-                errors["password2"] = "Passwords do not match."
-            elif len(password1) < 8:
-                errors["password1"] = "Password must be at least 8 characters long."
-            elif not any(char.isdigit() for char in password1):
-                errors["password1"] = "Password must contain at least one number."
-            elif not any(char.isupper() for char in password1):
-                errors["password1"] = (
-                    "Password must contain at least one uppercase letter."
-                )
 
-        # Add errors to the form
-        for field, message in errors.items():
-            self.add_error(field, message)
+class UserProfileUpdateForm(forms.ModelForm):
+    """
+    Form for updating user profile information
+    """
+    class Meta:
+        model = EshopUser
+        fields = [
+            'username', 'email', 'first_name', 'last_name',
+            'phone_number', 'address', 'profile_image',
+            'date_of_birth', 'newsletter_subscribed'
+        ]
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Username'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Email address'
+            }),
+            'first_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'First name'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Last name'
+            }),
+            'phone_number': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500',
+                'placeholder': '+1234567890'
+            }),
+            'address': forms.Textarea(attrs={
+                'rows': 3,
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Your address'
+            }),
+            'date_of_birth': forms.DateInput(attrs={
+                'type': 'date',
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500'
+            }),
+            'newsletter_subscribed': forms.CheckboxInput(attrs={
+                'class': 'form-checkbox h-5 w-5 text-orange-600 rounded focus:ring-orange-500'
+            })
+        }
 
-        return cleaned_data
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Mark required fields
+        self.fields['username'].required = True
+        self.fields['email'].required = True
 
-    def get_error_messages_as_strings(self):
-        """Convert form errors to string messages for messaging system"""
-        error_messages = []
-        for field, errors in self.errors.items():
-            if isinstance(errors, (list, tuple)):
-                error_text = errors[0]
-            else:
-                error_text = str(errors)
+    def clean_email(self):
+        """
+        Validate email uniqueness excluding current user
+        """
+        email = self.cleaned_data.get('email')
+        if self.instance and self.instance.pk:
+            if EshopUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("This email is already registered.")
+        return email
 
-            if field == "__all__":
-                error_messages.append(error_text)
-            else:
-                field_label = (
-                    self.fields[field].label if field in self.fields else field
-                )
-                error_messages.append(f"{field_label}: {error_text}")
+    def clean_username(self):
+        """
+        Validate username uniqueness excluding current user
+        """
+        username = self.cleaned_data.get('username')
+        if self.instance and self.instance.pk:
+            if EshopUser.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
+                raise forms.ValidationError("This username is already taken.")
+        return username
 
-        return error_messages
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    """
+    Custom password change form with better styling
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent',
+                'placeholder': field.label
+            })
 
 
 class UserLoginForm(AuthenticationForm):
