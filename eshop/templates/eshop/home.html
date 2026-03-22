@@ -1,385 +1,301 @@
+{% extends 'eshop/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Electronics.Co - Your premier destination for cutting-edge electronics and gadgets">
-    <meta name="theme-color" content="#f59e0b">
-    <title>{% block title %}Electronics.Co | Premium Electronics{% endblock %}</title>
 
-    <!-- Tailwind CSS + Fonts -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- Custom Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'sans': ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    colors: {
-                        'orange': {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            200: '#fed7aa',
-                            300: '#fdba74',
-                            400: '#fb923c',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                            800: '#9a3412',
-                            900: '#7c2d12',
-                        }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-up': 'slideUp 0.3s ease-out',
-                        'slide-down': 'slideDown 0.3s ease-out',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(10px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        slideDown: {
-                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #f97316;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ea580c;
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Loading animation */
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #f97316;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Hover effects */
-        .hover-lift {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-        }
-
-        /* Cart badge pulse animation */
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .cart-badge-update {
-            animation: badgePulse 0.3s ease-in-out;
-        }
-    </style>
-
-    {% block head %}{% endblock %}
-</head>
-
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 font-sans antialiased">
-
-    <!-- Modern Navigation Bar -->
-    {% block nav %}
-    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-200 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 md:h-20">
-
-                <!-- Logo/Brand -->
-                <div class="flex-shrink-0">
-                    <a href="{% url 'eshop:home' %}" class="flex items-center space-x-2 group">
-                        <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200">
-                            <i class="bi bi-lightning-charge-fill text-white text-sm"></i>
-                        </div>
-                        <span class="text-xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                            Electronics.Co
-                        </span>
-                    </a>
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-r from-orange-50 to-orange-100 overflow-hidden">
+    <div class="absolute inset-0 bg-grid-gray-900/[0.05] bg-[size:20px_20px]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6 animate-fade-in">
+                <div class="inline-flex items-center px-3 py-1 rounded-full bg-orange-200 text-orange-800 text-sm font-semibold">
+                    <i class="bi bi-lightning-charge-fill mr-2"></i>
+                    Welcome to Electronics.Co
                 </div>
-
-                <!-- Desktop Navigation Links -->
-                <div class="hidden md:flex items-center space-x-1">
-                    <a href="{% url 'eshop:home' %}" class="px-4 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 rounded-lg hover:bg-orange-50">
-                        <i class="bi bi-house-door mr-2"></i>Home
-                    </a>
-                    <a href="{% url 'eshop:product_list' %}" class="px-4 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 rounded-lg hover:bg-orange-50">
-                        <i class="bi bi-grid-3x3-gap-fill mr-2"></i>Products
-                    </a>
-                    <a href="{% url 'eshop:category_list' %}" class="px-4 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 rounded-lg hover:bg-orange-50">
-                        <i class="bi bi-tags-fill mr-2"></i>Categories
-                    </a>
-                    <a href="{% url 'eshop:orders_list' %}" class="px-4 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 rounded-lg hover:bg-orange-50">
-                        <i class="bi bi-receipt mr-2"></i>Orders
-                    </a>
-                </div>
-
-                <!-- Right Side: Cart & User Menu -->
-                <div class="flex items-center space-x-4">
-                    <!-- Cart Icon -->
-                    <a href="{% url 'eshop:view_cart' %}" class="relative group" id="cart-link">
-                        <div class="p-2 rounded-full bg-gray-100 hover:bg-orange-100 transition-all duration-200 group-hover:scale-105">
-                            <i class="bi bi-cart-fill text-gray-700 group-hover:text-orange-600 text-xl"></i>
-                        </div>
-                        {% if cart_item_count > 0 %}
-                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg">
-                            {{ cart_item_count }}
-                        </span>
-                        {% endif %}
-                    </a>
-
-                    <!-- User Menu Dropdown -->
-                    <div class="relative" x-data="{ open: false }" @click.away="open = false">
-                        {% if user.is_authenticated %}
-                        <button @click="open = !open" class="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:outline-none">
-                            <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center">
-                                <span class="text-white text-sm font-semibold">{{ user.username|make_list|first|upper }}</span>
-                            </div>
-                            <i class="bi bi-chevron-down text-gray-600 text-sm transition-transform duration-200" :class="{'rotate-180': open}"></i>
-                        </button>
-
-                        <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100 z-50" style="display: none;">
-                            <div class="px-4 py-2 border-b border-gray-100">
-                                <p class="text-sm font-semibold text-gray-900">{{ user.username }}</p>
-                                <p class="text-xs text-gray-500">{{ user.email }}</p>
-                            </div>
-                            <a href="{% url 'eshop:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-200">
-                                <i class="bi bi-person mr-2"></i>My Profile
-                            </a>
-                            <a href="{% url 'eshop:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
-                                <i class="bi bi-box-arrow-right mr-2"></i>Logout
-                            </a>
-                        </div>
-                        {% else %}
-                        <div class="flex items-center space-x-2">
-                            <a href="{% url 'eshop:login' %}" class="px-4 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
-                                Login
-                            </a>
-                            <a href="{% url 'eshop:register' %}" class="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 hover:scale-105">
-                                Register
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-orange-100 transition-colors duration-200">
-                        <i class="bi bi-list text-2xl text-gray-700"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 shadow-lg">
-            <div class="px-4 py-3 space-y-2">
-                <a href="{% url 'eshop:home' %}" class="block px-4 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors duration-200">
-                    <i class="bi bi-house-door mr-2"></i>Home
-                </a>
-                <a href="{% url 'eshop:product_list' %}" class="block px-4 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors duration-200">
-                    <i class="bi bi-grid-3x3-gap-fill mr-2"></i>Products
-                </a>
-                <a href="{% url 'eshop:category_list' %}" class="block px-4 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors duration-200">
-                    <i class="bi bi-tags-fill mr-2"></i>Categories
-                </a>
-                <a href="{% url 'eshop:orders_list' %}" class="block px-4 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors duration-200">
-                    <i class="bi bi-receipt mr-2"></i>Orders
-                </a>
-            </div>
-        </div>
-    </nav>
-    {% endblock %}
-
-    <!-- Messages Container -->
-    <div id="message-container" class="fixed top-20 right-4 z-50 w-full max-w-sm pointer-events-none">
-        {% include 'eshop/messages.html' %}
-    </div>
-
-    <!-- Main Content -->
-    <main class="flex-grow">
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <!-- Modern Footer -->
-    {% block footer %}
-    <footer class="bg-gray-900 text-gray-300 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Brand Section -->
-                <div class="col-span-1 md:col-span-1">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-                            <i class="bi bi-lightning-charge-fill text-white text-sm"></i>
-                        </div>
-                        <span class="text-xl font-bold text-white">Electronics.Co</span>
-                    </div>
-                    <p class="text-sm text-gray-400 mb-4">
-                        Your premier destination for cutting-edge electronics and gadgets. Quality products, exceptional service.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
-                            <i class="bi bi-facebook text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
-                            <i class="bi bi-twitter-x text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
-                            <i class="bi bi-instagram text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200">
-                            <i class="bi bi-linkedin text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div>
-                    <h3 class="text-white font-semibold mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{% url 'eshop:home' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Home</a></li>
-                        <li><a href="{% url 'eshop:product_list' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Products</a></li>
-                        <li><a href="{% url 'eshop:category_list' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Categories</a></li>
-                        <li><a href="{% url 'eshop:orders_list' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">My Orders</a></li>
-                    </ul>
-                </div>
-
-                <!-- Support -->
-                <div>
-                    <h3 class="text-white font-semibold mb-4">Support</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{% url 'eshop:about' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">About Us</a></li>
-                        <li><a href="{% url 'eshop:contact' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Contact</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Shipping Info</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Returns Policy</a></li>
-                    </ul>
-                </div>
-
-                <!-- Reviews -->
-                <div>
-                    <h3 class="text-white font-semibold mb-4">Reviews</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{% url 'eshop:all_reviews' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Customer Reviews</a></li>
-                        <li><a href="{% url 'eshop:choose_product_for_review' %}" class="text-gray-400 hover:text-orange-500 transition-colors duration-200 text-sm">Write a Review</a></li>
-                        <li class="text-gray-500 text-sm mt-2">
-                            <i class="bi bi-star-fill text-orange-500"></i>
-                            <i class="bi bi-star-fill text-orange-500"></i>
-                            <i class="bi bi-star-fill text-orange-500"></i>
-                            <i class="bi bi-star-fill text-orange-500"></i>
-                            <i class="bi bi-star-half text-orange-500"></i>
-                            <span class="ml-2">4.5/5</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Bottom Bar -->
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-sm text-gray-500">
-                    &copy; {% now "Y" %} Electronics.Co. All rights reserved. |
-                    <a href="#" class="hover:text-orange-500 transition-colors">Privacy Policy</a> |
-                    <a href="#" class="hover:text-orange-500 transition-colors">Terms of Service</a>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                    Discover the Future of
+                    <span class="bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">Technology</span>
+                </h1>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    Shop the latest electronics, gadgets, and accessories at unbeatable prices.
+                    Quality products, fast delivery, and exceptional service guaranteed.
                 </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="{% url 'eshop:product_list' %}"
+                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105">
+                        Shop Now
+                        <i class="bi bi-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#featured-categories"
+                       class="inline-flex items-center px-6 py-3 bg-white text-orange-600 font-semibold rounded-lg border border-orange-200 hover:bg-orange-50 transition-all duration-200">
+                        Explore Categories
+                        <i class="bi bi-chevron-down ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="flex items-center gap-6 pt-4">
+                    <div class="flex items-center gap-2">
+                        <i class="bi bi-truck text-orange-500 text-xl"></i>
+                        <span class="text-sm text-gray-600">Free Shipping</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="bi bi-shield-check text-orange-500 text-xl"></i>
+                        <span class="text-sm text-gray-600">Secure Payment</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="bi bi-arrow-return-left text-orange-500 text-xl"></i>
+                        <span class="text-sm text-gray-600">30-Day Returns</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative hidden md:block">
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 blur-3xl opacity-20 rounded-full"></div>
+                <img src="{% static 'images/hero-electronics.png' %}" alt="Electronics"
+                     class="relative z-10 w-full h-auto animate-float"
+                     onerror="this.src='https://via.placeholder.com/600x400?text=Electronics'">
             </div>
         </div>
-    </footer>
-    {% endblock %}
+    </div>
+</section>
 
-    <!-- Alpine.js for dropdowns -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<!-- Categories Section -->
+<section id="featured-categories" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Shop by <span class="bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">Category</span>
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Browse our curated collection of premium electronics across various categories
+            </p>
+        </div>
 
-    <!-- Mobile menu toggle script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
+        {% if categories %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for category in categories %}
+                <div class="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-100 to-orange-50 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="p-6 relative">
+                        <div class="w-16 h-16 bg-gradient-to-r from-orange-100 to-orange-200 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <i class="bi bi-tag-fill text-orange-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
+                            {{ category.name }}
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            {{ category.products.count }} products available
+                        </p>
+                        <a href="{% url 'eshop:category_list' %}?category={{ category.id }}"
+                           class="inline-flex items-center text-orange-600 font-semibold group-hover:translate-x-2 transition-transform duration-200">
+                            Explore
+                            <i class="bi bi-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <i class="bi bi-inbox text-6xl text-gray-300 mb-4 block"></i>
+            <p class="text-gray-500">No categories available at the moment.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
 
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
-                });
+<!-- Products Section -->
+{% for category in categories %}
+    {% if category.products.all %}
+    <section class="py-12 {% cycle 'bg-white' 'bg-gray-50' %}">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                        {{ category.name }}
+                    </h2>
+                    <p class="text-gray-600">Discover our latest {{ category.name|lower }} collection</p>
+                </div>
+                <a href="{% url 'eshop:product_list' %}?category={{ category.id }}"
+                   class="hidden md:inline-flex items-center text-orange-600 font-semibold hover:translate-x-1 transition-transform">
+                    View All
+                    <i class="bi bi-chevron-right ml-1"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                {% for product in category.products.all|slice:":4" %}
+                <div class="group bg-white rounded-xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-orange-200">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 h-64">
+                        <!-- Product Image -->
+                        <a href="{% url 'eshop:product_detail' slug=product.slug %}">
+                            <img src="{% static 'images/' %}{{ product.image }}"
+                                 alt="{{ product.name }}"
+                                 class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.src='https://via.placeholder.com/300x300?text={{ product.name|urlencode }}'">
+                        </a>
+
+                        <!-- Quick Actions -->
+                        <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                            <button onclick="addToWishlist({{ product.id }})"
+                                    class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+
+                        <!-- Sale Badge -->
+                        {% if product.discount_percentage %}
+                        <div class="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            -{{ product.discount_percentage }}%
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="p-4">
+                        <a href="{% url 'eshop:product_detail' slug=product.slug %}">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-orange-600 transition-colors">
+                                {{ product.name }}
+                            </h3>
+                        </a>
+
+                        <!-- Rating Stars -->
+                        <div class="flex items-center mb-2">
+                            {% with avg_rating=product.average_rating|default:0 %}
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= avg_rating %}
+                                    <i class="bi bi-star-fill text-yellow-400 text-sm"></i>
+                                {% elif forloop.counter <= avg_rating|add:0.5 %}
+                                    <i class="bi bi-star-half text-yellow-400 text-sm"></i>
+                                {% else %}
+                                    <i class="bi bi-star text-yellow-400 text-sm"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="text-xs text-gray-500 ml-2">({{ product.reviews.count }})</span>
+                            {% endwith %}
+                        </div>
+
+                        <div class="flex items-center justify-between mt-3">
+                            <div>
+                                {% if product.discount_price %}
+                                <span class="text-2xl font-bold text-orange-600">${{ product.discount_price }}</span>
+                                <span class="text-sm text-gray-400 line-through ml-2">${{ product.price }}</span>
+                                {% else %}
+                                <span class="text-2xl font-bold text-orange-600">${{ product.price }}</span>
+                                {% endif %}
+                            </div>
+
+                            <form action="{% url 'eshop:add_to_cart' product.id %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="p-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all duration-200 hover:scale-105">
+                                    <i class="bi bi-cart-plus text-lg"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Mobile View All Button -->
+            <div class="text-center mt-8 md:hidden">
+                <a href="{% url 'eshop:product_list' %}?category={{ category.id }}"
+                   class="inline-flex items-center px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors">
+                    View All {{ category.name }}
+                    <i class="bi bi-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% empty %}
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <i class="bi bi-box-seam text-6xl text-gray-300 mb-4 block"></i>
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">No Products Available</h3>
+        <p class="text-gray-500">Check back later for exciting new products!</p>
+    </div>
+</section>
+{% endfor %}
+
+<!-- Features Section -->
+<section class="py-16 bg-gradient-to-r from-orange-50 to-orange-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-xl transition-all group-hover:scale-110">
+                    <i class="bi bi-truck text-orange-500 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Free Delivery</h3>
+                <p class="text-gray-600">Free shipping on orders over $50</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-xl transition-all group-hover:scale-110">
+                    <i class="bi bi-shield-check text-orange-500 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Secure Payment</h3>
+                <p class="text-gray-600">100% secure payment processing</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-xl transition-all group-hover:scale-110">
+                    <i class="bi bi-headset text-orange-500 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">24/7 Support</h3>
+                <p class="text-gray-600">Dedicated customer support team</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .bg-grid-gray-900\/\[0\.05\] {
+        background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    }
+</style>
+
+<script>
+function addToWishlist(productId) {
+    // Add your wishlist functionality here
+    console.log('Added to wishlist:', productId);
+    // You can implement AJAX call to add to wishlist
+}
+
+// Add loading animation to add to cart buttons
+document.querySelectorAll('form[action*="add_to_cart"]').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const button = this.querySelector('button');
+        const originalHtml = button.innerHTML;
+        button.innerHTML = '<div class="loading-spinner w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>';
+        button.disabled = true;
+
+        // Reset button after 2 seconds if something goes wrong
+        setTimeout(() => {
+            if (button.disabled) {
+                button.innerHTML = originalHtml;
+                button.disabled = false;
             }
-
-            // Cart badge animation
-            const cartBadge = document.getElementById('cart-badge');
-            if (cartBadge) {
-                setInterval(() => {
-                    cartBadge.classList.add('cart-badge-update');
-                    setTimeout(() => {
-                        cartBadge.classList.remove('cart-badge-update');
-                    }, 300);
-                }, 5000);
-            }
-
-            // Add loading state to all forms
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    const submitBtn = this.querySelector('button[type="submit"]');
-                    if (submitBtn && !submitBtn.disabled) {
-                        const originalText = submitBtn.innerHTML;
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<div class="loading-spinner w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>';
-
-                        // Re-enable after 5 seconds if something goes wrong
-                        setTimeout(() => {
-                            if (submitBtn.disabled) {
-                                submitBtn.disabled = false;
-                                submitBtn.innerHTML = originalText;
-                            }
-                        }, 5000);
-                    }
-                });
-            });
-        });
-    </script>
-
-    {% block scripts %}{% endblock %}
-</body>
-</html>
+        }, 2000);
+    });
+});
+</script>
+{% endblock %}
