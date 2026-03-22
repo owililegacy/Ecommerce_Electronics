@@ -122,7 +122,7 @@ def profile_view(request):
     """
     Display user profile with recent orders and reviews
     """
-    user = request.user
+    user = User.objects.get(pk=request.user.pk)  # Refresh user data from DB    
 
     # Get user's orders
     recent_orders = (
@@ -140,14 +140,10 @@ def profile_view(request):
 
     # Calculate statistics
     total_orders = (
-        Order.objects.filter(user=user).count() if hasattr(user, "order_set") else 0
+        Order.objects.filter(user=user).count()
     )
-    total_reviews = (
-        ProductReview.objects.filter(user=user).count()
-        if hasattr(user, "review_set")
-        else 0
-    )
-
+    total_reviews = ProductReview.objects.filter(user=user).count()
+    
     context = {
         "profile": user,
         "recent_orders": recent_orders,
@@ -414,7 +410,7 @@ def add_review(request, product_slug):
             review.user = request.user  # Assign current user to review
             review.save()
             return redirect(
-                "product_detail", slug=product.slug
+                "eshop:product_detail", slug=product.slug
             )  # Redirect back to product detail
     else:
         form = ReviewForm()
