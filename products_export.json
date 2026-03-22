@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "name": "iphone 16 pro max",
+    "slug": "iphone-16",
+    "description": "Apple iPhone 16 Pro Max\r\n\r\nApple iPhone 16 Pro Max MORE PICTURES\r\n\r\n    Released 2024, September 20\r\n    227g, 8.3mm thickness\r\n    iOS 18, up to iOS 18.2\r\n    256GB/512GB/1TB storage, no card slot\r\n    57%\r\n    6,139,520 hits\r\n    427\r\n    Become a fan\r\n    6.9\"\r\n    1320x2868 pixels\r\n    48MP\r\n    2160p",
+    "price": 1200,
+    "stock": 0,
+    "image": "products/iPhone-16.png",
+    "category_id": 1,
+    "category_name": "phones"
+  },
+  {
+    "id": 2,
+    "name": "samsung s24 ultra",
+    "slug": "samsung-s24",
+    "description": "Samsung Galaxy S24 Ultra\r\n\r\nSamsung Galaxy S24 Ultra MORE PICTURES\r\n\r\n    Released 2024, January 24\r\n    232g or 233g, 8.6mm thickness\r\n    Android 14, up to 7 major upgrades\r\n    256GB/512GB/1TB storage, no card slot\r\n    72%\r\n    11,637,843 hits\r\n    1540\r\n    Become a fan\r\n    6.8\"\r\n    1440x3120 pixels\r\n    200MP\r\n    4320p",
+    "price": 1190,
+    "stock": 0,
+    "image": "products/s24ultra.png",
+    "category_id": 1,
+    "category_name": "phones"
+  },
+  {
+    "id": 3,
+    "name": "HP Spectre x360",
+    "slug": "HP-Spectre-x360",
+    "description": "2-in-1 Laptop 16-f0020ca Convertible Laptop 11th Gen Intel Core i7-11390H upto 5.0GHz 16\" 3K Touchscreen Display 32GB DDR4-3200 MHz RAM 2TB PCIe NVMe TLC M.2 SSD 4GB GDDR6 NVIDIA GeForce RTX 3050 Laptop GPU Windows 11 Home Plus Pen 1 Year Warranty",
+    "price": 1825,
+    "stock": 13,
+    "image": "products/hpspecter.webp",
+    "category_id": 2,
+    "category_name": "laptops"
+  },
+  {
+    "id": 4,
+    "name": "MacBook Pro M4",
+    "slug": "MacBook-Pro-M4",
+    "description": "Display: 14.2-inch Liquid Retina XDR, 1600 nits peak brightness, up to 1,000,000:1 contrast and 1000 nits sustained brightness.\r\n    Chipset: Apple M4, 16-core Neural Engine\r\n    Memory: 1TB SSD Storage, 24GB Unified Memory\r\n    Connectivity: 3 Thunderbolt 5 ports, SDXC card slot, HDMI port, headphone jack, MagSafe 3 port\r\n    Battery: Up to 24 hours on a single charge, 96W USB-C Power Adapter\r\n    Apple Intelligence\r\n    Magic Keyboard with Touch ID\r\n    Force Touch trackpad\r\n    Available Colors: Space Black, Silver",
+    "price": 2700,
+    "stock": 12,
+    "image": "products/MacBook-Pro-M4-Pro-14-inch-Silver.jpg.webp",
+    "category_id": 2,
+    "category_name": "laptops"
+  },
+  {
+    "id": 5,
+    "name": "iPad Pro",
+    "slug": "iPad-Pro",
+    "description": "Display:13-inch Ultra Retina XDR display with ProMotion\r\n    Front Camera:12MP\r\n    Rear Camera:12MP\r\n    OS: iPadOS 17 \r\n    Chipset: M4\r\n    Storage: 1TB\r\n    RAM: 8GB\r\n    Colors: Silver, Space Gray",
+    "price": 1620,
+    "stock": 9,
+    "image": "products/iPad-Pro-13-Inch-M4-Space-Gray_Z0Rvq4X.jpg.webp",
+    "category_id": 3,
+    "category_name": "tablets"
+  },
+  {
+    "id": 6,
+    "name": "Samsung Galaxy Tab S10 Ultra",
+    "slug": "Samsung-Galaxy-Tab-S10-Ultra",
+    "description": "RAM: 12GB, 16GB\r\n    Internal Memory: 256GB, 512GB, 1TB\r\n    OS: Android 14, One UI 6.1\r\n    Chipset: Mediatek Dimensity 9300+ (4 nm)\r\n    Display: 14.6-inch Dynamic AMOLED 2X\r\n    Primary Camera: 12MP + 12MP\r\n    Front Camera: 8MP + 13MP\r\n    Connectivity: 5G, Wi-Fi 7, Bluetooth 5.4, GPS, USB Type 3.2\r\n    Battery: 11200mAh, 45W",
+    "price": 1178,
+    "stock": 12,
+    "image": "products/Samsung-Galaxy-Tab-S10-Ultra-1.jpg",
+    "category_id": 3,
+    "category_name": "tablets"
+  },
+  {
+    "id": 7,
+    "name": "Psp X7",
+    "slug": "gaming-consoles",
+    "description": "Share this product\r\nPsp X7 Plus 5.1inch Video Game Console, Built-In Game 1000+, 8GB",
+    "price": 100,
+    "stock": 8,
+    "image": "products/gaming_console_pAMIQwu.jpg",
+    "category_id": 4,
+    "category_name": "gadgets"
+  },
+  {
+    "id": 8,
+    "name": "15000+ Retro Video Game",
+    "slug": "Retro-Video-Game",
+    "description": "15000+ Retro Video Game Console 4K HD Output",
+    "price": 102.78,
+    "stock": 0,
+    "image": "products/retro_console_8vODGqx.jpg",
+    "category_id": 4,
+    "category_name": "gadgets"
+  },
+  {
+    "id": 9,
+    "name": "Anker Soundcore Space One",
+    "slug": "soundcore-space-one",
+    "description": "Anker Soundcore Space One - Active Noise Cancelling Headphones, 2X Stronger Voice Reduction, 40H ANC Playtime-Black\r\nBrand: Anker | Similar products from Anker",
+    "price": 109.11,
+    "stock": 11,
+    "image": "products/soundfree_3rLrEji.jpg",
+    "category_id": 5,
+    "category_name": "accessories"
+  },
+  {
+    "id": 10,
+    "name": "Logitech G304 mouse",
+    "slug": "G304-mouse",
+    "description": "Logitech G304 LIGHTSPEED Wireless RGB Gaming Mouse - BLACK\r\nBrand: Logitech | Similar products from Logitech",
+    "price": 13.78,
+    "stock": 11,
+    "image": "products/mouseg304_YHz5ira.jpg",
+    "category_id": 5,
+    "category_name": "accessories"
+  },
+  {
+    "id": 11,
+    "name": "Lenovo 13th Generation LEGION 7 PRO Laptop",
+    "slug": "laptops-lenovo",
+    "description": "Lenovo Legion Pro 7 16IRX8H, Intel Core i9 13900HX, 32GB DDR5 5600, 1TB SSD M.2 2280 PCIe 4.0x4 NVMe, NVIDIA GeForce RTX 4080 12GB GDDR6 Graphics, Windows 11 Home, 16\" WQXGA 240Hz, No ODD, WLAN + Bluetooth (Intel Killer Wi-Fi 6E AX1675i, 11ax 2x2 + BT5.3), FHD 1080p with E-shutter Webcam, Per-key RGB Backlit Keyboard, Onyx Grey, 2 Year Warranty, Ports: One USB 3.2 Gen 1 (Always On), Three USB 3.2 Gen 1, One USB-C 3.2 Gen 2 (support data transfer, Power Delivery 140W and DisplayPort 1.4), One Thunderbolt 4 / USB4 40Gbps (support data transfer, Power Delivery and DisplayPort 1.4), One HDMI 2.1, up to 8K/60Hz, One Headphone / microphone combo jack (3.5mm), One Ethernet (RJ-45), One Power connector - 82WQ00B3UE",
+    "price": 3875,
+    "stock": 10,
+    "image": "products/lenovo_Hr9TKA2.jpg",
+    "category_id": 2,
+    "category_name": "laptops"
+  },
+  {
+    "id": 12,
+    "name": "Google PIXEL 7 PRO 5G",
+    "slug": "phones-google-pixel",
+    "description": "Google Tensor G2 makes Pixel 7 Pro faster, more efficient and more secure \u2013 with the best photo and video quality yet on Pixel.\r\nThe Adaptive Battery can last over 24 hours. Turn on Extreme Battery Saver, and the battery can last up to 72 hours.\r\nThe Pixel 7 camera takes incredible, authentic photos with Real Tone and stunning, dramatic video with Cinematic Blur.\r\nWith Google Tensor G2 and the Titan M2 security chip, your Pixel is built with multiple layers of security to help keep your personal info safe.",
+    "price": 560,
+    "stock": 14,
+    "image": "products/google-pixel_wxfOhzf.jpg",
+    "category_id": 1,
+    "category_name": "phones"
+  },
+  {
+    "id": 13,
+    "name": "XIAOMI Pad 6 Max",
+    "slug": "tablets-xiaomi-pad",
+    "description": ". Dimension: 318.58x206.1x6.53mm\r\n2. Weight: 750g\r\n3. Display: 14 inch 2.8K LCD screen, 2880x1800 resolution, 242 PPI, 1500:1 contrast ratio, up to 120Hz refresh rate, 120Hz finger touch sampling rate, 240Hz stylus touch sampling rate, support HDR10, Dolby Vision, reading mode, sunny screen, Rheinland hardware low blue light certification.\r\n4. CPU: Qualcomm Snapdragon 8+ octa core up to 3.2GHz\r\n5. GPU: Adreno 730\r\n5. RAM+ROM: 8GB+256GB / 12GB+256GB / 12GB+512GB / 16GB+1TB\r\n7. OS: MIUI Pad 14 (based on Android 13)",
+    "price": 1534,
+    "stock": 12,
+    "image": "products/xiaomi-pad_9mGv47k.jpg",
+    "category_id": 3,
+    "category_name": "tablets"
+  },
+  {
+    "id": 14,
+    "name": "Apple Watch S9",
+    "slug": "gadget-aple-watch",
+    "description": "WHY APPLE WATCH SERIES 9 \u2014 Your essential companion for a healthy life is now even more powerful. The S9 chip enables a superbright display and a magical new way to quickly and easily interact with your Apple Watch without touching the screen. Advanced health, safety, and activity features provide powerful insights and help when you need it. And redesigned apps in watchOS give you more information at a glance.",
+    "price": 457.4,
+    "stock": 7,
+    "image": "products/apple-watch_Rf617uM.jpg",
+    "category_id": 4,
+    "category_name": "gadgets"
+  },
+  {
+    "id": 15,
+    "name": "Apple Airpods Max Headphones",
+    "slug": "Apple-Airpods-Max-Headphones",
+    "description": "Apple-designed dynamic driver\r\nActive Noise Cancellation\r\nTransparency mode\r\nPersonalized Spatial Audio with dynamic head tracking1\r\nAdaptive EQ\r\nSensors",
+    "price": 534.9,
+    "stock": 12,
+    "image": "products/apple-headphones_Cs6m4EC.jpg",
+    "category_id": 5,
+    "category_name": "accessories"
+  }
+]
