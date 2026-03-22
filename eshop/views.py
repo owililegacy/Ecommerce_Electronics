@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UserRegisterForm, UserLoginForm
+from django.db.models import Q
 import logging
 
 logger = logging.getLogger(__name__)
@@ -323,3 +324,24 @@ def about_view(request):
 
 def contact_view(request):
     return render(request, "eshop/contact.html")
+
+
+def search_products(request):
+    """Search for products by name or description"""
+    query = request.GET.get('q', '').strip()
+    products = []
+    
+    if query:
+        # Search in product name and description (case-insensitive)
+        products = Product.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query),
+            available=True
+        ).order_by('name')
+    
+    context = {
+        'products': products,
+        'query': query,
+        'results_count': len(products)
+    }
+    return render(request, 'eshop/search_results.html', context)
+

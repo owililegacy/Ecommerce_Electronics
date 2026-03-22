@@ -2,7 +2,7 @@
 module.exports = {
   darkMode: "class",
   content: [
-    "/home/skye/Ecommerce_Electronics/eshop/templates/**/*.html",
+    "eshop/templates/**/*.html",
   ],
   theme: {
     screens: {
