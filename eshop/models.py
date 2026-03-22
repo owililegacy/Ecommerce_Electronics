@@ -152,7 +152,7 @@ class Product(models.Model):
 
 class Cart(models.Model):
     user = models.OneToOneField(
-        EshopUser, on_delete=models.CASCADE, related_name="cart"
+        "eshop.EshopUser", on_delete=models.CASCADE, related_name="cart"
     )  # One cart per user
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -174,7 +174,9 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(EshopUser, on_delete=models.CASCADE, related_name="orders")
+    user = models.ForeignKey(
+        "eshop.EshopUser", on_delete=models.CASCADE, related_name="orders"
+    )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField()
@@ -222,7 +224,7 @@ class ProductReview(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="reviews"
     )
-    user = models.ForeignKey(EshopUser, on_delete=models.CASCADE)
+    user = models.ForeignKey("eshop.EshopUser", on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     comment = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

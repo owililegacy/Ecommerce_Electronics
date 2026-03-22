@@ -28,13 +28,13 @@
         <tr>
           <td>{{ item.product.name }}</td>
           <td>{{ item.quantity }}</td>
-          <td>${{ item.price }}</td>
-          <td>${{ item.get_total_price }}</td>
+          <td>Ksh. {{ item.price }}</td>
+          <td>Ksh. {{ item.get_total_price }}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  <p class="total-price">Total Price: ${{ order.get_total_price }}</p>
+  <p class="total-price">Total Price: Ksh. {{ order.get_total_price }}</p>
 </div>
 {% endblock %}

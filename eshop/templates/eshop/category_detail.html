@@ -21,7 +21,7 @@
 
                 <!-- Spacer to push price & button to the bottom -->
                 <div class="mt-auto">
-                  <p class="card-text text-muted mb-2">Price: <span class="text-orange fw-bold">${{ product.price }}</span></p>
+                  <p class="card-text text-muted mb-2">Price: <span class="text-orange fw-bold">Ksh. {{ product.price }}</span></p>
                   
                   <!-- Add to Cart Button (Remains Clickable) -->
                   <a href="{% url 'eshop:add_to_cart' product.id %}" class="btn btn-orange w-100 position-relative">Add to Cart</a>

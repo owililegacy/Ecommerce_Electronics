@@ -8,7 +8,6 @@ from .models import (
     ProductReview,
     Cart,
     EshopUser,
-    Review,
 )
 from django.http import Http404
 from .forms import ReviewForm, OrderForm
@@ -134,7 +133,7 @@ def profile_view(request):
 
     # Get user's reviews
     recent_reviews = (
-        Review.objects.filter(user=user).order_by("-created_at")[:5]
+        ProductReview.objects.filter(user=user).order_by("-created_at")[:5]
         if hasattr(user, "review_set")
         else []
     )
@@ -144,7 +143,9 @@ def profile_view(request):
         Order.objects.filter(user=user).count() if hasattr(user, "order_set") else 0
     )
     total_reviews = (
-        Review.objects.filter(user=user).count() if hasattr(user, "review_set") else 0
+        ProductReview.objects.filter(user=user).count()
+        if hasattr(user, "review_set")
+        else 0
     )
 
     context = {

@@ -26,8 +26,8 @@
                   <button type="submit" class="btn btn-sm btn-primary">Update</button>
                 </form>
               </td>
-              <td>${{ cart_item.product.price }}</td>
-              <td>${{ cart_item.get_total_price }}</td>
+              <td>Ksh. {{ cart_item.product.price }}</td>
+              <td>Ksh. {{ cart_item.get_total_price }}</td>
               <td>
                 <a href="{% url 'eshop:remove_from_cart' cart_item.id %}" class="btn btn-sm btn-danger">Remove</a>
               </td>
@@ -35,7 +35,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <p>Total: ${{ cart.get_total_price }}</p>
+      <p>Total: Ksh. {{ cart.get_total_price }}</p>
       <a href="{% url 'eshop:create_order' %}" class="btn btn-primary">Proceed to Checkout</a>
     {% else %}
     <p style="text-align: center; font-weight: bold; color: #FF8C00;">Your cart is empty.</p>
