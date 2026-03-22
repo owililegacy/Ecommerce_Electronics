@@ -47,14 +47,14 @@
                     <!-- Form Fields -->
                     {% for field in form %}
                         <div class="space-y-1">
-                            <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-orange-600">
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-gray-700">
                                 {{ field.label }}
                                 {% if field.field.required %}
                                     <span class="text-orange-500">*</span>
                                 {% endif %}
                             </label>
 
-                            <!-- Field Input with Password Toggle -->
+                            <!-- Field Input -->
                             {% if field.name == "password1" or field.name == "password2" %}
                                 <div class="relative">
                                     {{ field }}
@@ -68,7 +68,7 @@
                                 {{ field }}
                             {% endif %}
 
-                            <!-- Field Errors -->
+                            <!-- Display only ONE error per field -->
                             {% if field.errors %}
                                 <div class="flex items-center gap-2 text-sm text-red-600 mt-1">
                                     <i class="bi bi-exclamation-circle-fill text-xs"></i>
@@ -76,11 +76,19 @@
                                 </div>
                             {% endif %}
 
-                            <!-- Help Text -->
-                            {% if field.help_text and field.name == "password1" %}
+                            <!-- Help Text for Password (only shown when no error) -->
+                            {% if field.name == "password1" and not field.errors %}
                                 <div class="text-xs text-gray-500 mt-1 flex items-center gap-1">
                                     <i class="bi bi-info-circle-fill"></i>
-                                    <span>8+ characters, 1 uppercase, 1 number</span>
+                                    <span>8+ characters, 1 uppercase, 1 number, 1 special character</span>
+                                </div>
+                            {% endif %}
+
+                            <!-- Help Text for Phone (only shown when no error) -->
+                            {% if field.name == "phone_number" and not field.errors and field.value %}
+                                <div class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                    <i class="bi bi-check-circle-fill text-green-500"></i>
+                                    <span>Valid phone number format</span>
                                 </div>
                             {% endif %}
                         </div>

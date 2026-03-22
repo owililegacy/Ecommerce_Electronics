@@ -13,7 +13,7 @@ from django.http import Http404
 from .forms import ReviewForm, OrderForm
 
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth import login, logout, get_user_model, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -32,48 +32,43 @@ logger.setLevel(logging.INFO)
 User = get_user_model()
 
 
+logger = logging.getLogger(__name__)
+
+
 @csrf_protect
 def register_view(request):
     if request.method == "POST":
         logger.debug(f"Incoming request data: {request.POST}")
 
         form = UserRegisterForm(request.POST)
-        logger.info(
-            f"Valid: {form.is_valid()} {form.cleaned_data if form.is_valid() else 'Form invalid'}"
-        )
 
         if form.is_valid():
-            # Form validation already handles uniqueness checks via clean() method
-            # No need to duplicate database queries here
+            # Save the user
             user = form.save()
             messages.success(request, f"Account created for {user.username}!")
-            # Login user
-            username = request.POST.get("username")
-            user = None
-            if username:
-                user = User.objects.filter(username=username)
-            if user and user.exists():
-                login(request, user.first())
+
+            # Log the user in
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password1")
+
+            # Authenticate and login
+            authenticated_user = authenticate(
+                request, username=username, password=password
+            )
+            if authenticated_user:
+                login(request, authenticated_user)
+                logger.info(f"User {username} logged in successfully")
                 return redirect("eshop:home")
             else:
+                logger.warning(f"Could not authenticate user {username}")
                 return redirect("eshop:login")
         else:
-            # Extract and format errors as strings instead of lists
-            for field, errors in form.errors.items():
-                # Get the first error message as a string
-                error_msg = errors[0] if isinstance(errors, list) else str(errors)
-
-                if field == "__all__":
-                    messages.error(request, error_msg)
-                else:
-                    # Get the field label for better readability
-                    field_label = (
-                        form.fields[field].label if field in form.fields else field
-                    )
-                    messages.error(request, f"{field_label}: {error_msg}")
-
-            # Also log the errors for debugging
+            # Log validation errors
             logger.error(f"Form validation errors: {dict(form.errors)}")
+
+            # Don't add messages here - let the template display field errors
+            # This prevents duplicate error messages
+            pass
 
     else:
         form = UserRegisterForm()
@@ -370,7 +365,19 @@ def create_order(request):
                 "eshop:orders_list"
             )  # Use the namespace 'eshop:orders_list'
     else:
-        form = OrderForm()
+        initial = {}
+        if request.user.is_authenticated:
+            initial.update(
+                {
+                    "name": request.user.get_full_name() or request.user.username,
+                    "email": request.user.email or "",
+                    "phone": getattr(request.user, "phone_number", ""),
+                    "address": getattr(request.user.profile, "phone_number", "")
+                    if hasattr(request.user, "profile")
+                    else "",
+                }
+            )
+        form = OrderForm(initial=initial)
     context = {"form": form, "cart": cart}
     return render(request, "eshop/create_order.html", context)
 
