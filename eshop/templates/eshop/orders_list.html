@@ -20,7 +20,7 @@
             <tr>
               <td>{{ order.id }}</td>
               <td>{{ order.created }}</td>
-              <td>${{ order.get_total_price }}</td>
+              <td>Ksh. {{ order.get_total_price }}</td>
               <td>
                 <a href="{% url 'eshop:order_detail' order.id %}" class="btn-view">View</a>
               </td>

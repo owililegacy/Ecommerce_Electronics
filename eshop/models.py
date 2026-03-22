@@ -1,28 +1,123 @@
 from django.db import models
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 
-# Create your models here.
-from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
+# from django.utils import timezone
+import os
 
 
-class EshopUser(User):
+class EshopUser(AbstractUser):
+    """
+    Custom User Model for Eshop with additional fields
+    """
 
-    def __str__(self):
-        return self.username
+    # Additional fields
+    phone_regex = RegexValidator(
+        regex=r"^\+?1?\d{9,15}$",
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
+    )
+    phone_number = models.CharField(
+        validators=[phone_regex],
+        max_length=17,
+        blank=True,
+        null=True,
+        verbose_name="Phone Number",
+    )
+
+    address = models.TextField(blank=True, null=True, verbose_name="Address")
+
+    profile_image = models.ImageField(
+        upload_to="profile_images/", blank=True, null=True, verbose_name="Profile Image"
+    )
+
+    date_of_birth = models.DateField(
+        blank=True, null=True, verbose_name="Date of Birth"
+    )
+
+    # Preferences
+    newsletter_subscribed = models.BooleanField(
+        default=False, verbose_name="Subscribe to Newsletter"
+    )
+
+    # Timestamps
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Last Updated")
+
+    # Verification fields
+    email_verified = models.BooleanField(default=False, verbose_name="Email Verified")
+
+    # Account status
+    is_active = models.BooleanField(default=True, verbose_name="Active")
 
     class Meta:
-        app_label = "Users"
-        db_table = "Users"
+        # app_label = "Users"
+        db_table = "users"
         verbose_name = "User"
         verbose_name_plural = "Users"
+        ordering = ["-date_joined"]
+
+    def __str__(self):
+        return self.get_full_name() or self.username
+
+    def get_full_name(self):
+        """
+        Return the full name of the user
+        """
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        return self.username
+
+    def get_short_name(self):
+        """
+        Return the short name of the user
+        """
+        return self.first_name or self.username
 
     def serialize(self):
+        """
+        Serialize user data for API responses
+        """
         data = {
+            "id": self.id,
             "username": self.username,
             "email": self.email,
-            "created_at": self.date_joined,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "full_name": self.get_full_name(),
+            "phone_number": self.phone_number,
+            "address": self.address,
+            "date_joined": self.date_joined.isoformat() if self.date_joined else None,
+            "last_login": self.last_login.isoformat() if self.last_login else None,
+            "profile_image": self.profile_image.url if self.profile_image else None,
+            "newsletter_subscribed": self.newsletter_subscribed,
+            "email_verified": self.email_verified,
         }
         return data
+
+    def save(self, *args, **kwargs):
+        """
+        Override save to handle profile image cleanup
+        """
+        if self.pk:
+            try:
+                old_instance = EshopUser.objects.get(pk=self.pk)
+                if (
+                    old_instance.profile_image
+                    and old_instance.profile_image != self.profile_image
+                ):
+                    if os.path.isfile(old_instance.profile_image.path):
+                        os.remove(old_instance.profile_image.path)
+            except EshopUser.DoesNotExist:
+                pass
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        """
+        Override delete to remove profile image from storage
+        """
+        if self.profile_image and os.path.isfile(self.profile_image.path):
+            os.remove(self.profile_image.path)
+        super().delete(*args, **kwargs)
 
 
 class Category(models.Model):
@@ -58,7 +153,7 @@ class Product(models.Model):
 
 class Cart(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="cart"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart"
     )  # One cart per user
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -80,7 +175,9 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
+    )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField()
@@ -128,7 +225,7 @@ class ProductReview(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="reviews"
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     comment = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

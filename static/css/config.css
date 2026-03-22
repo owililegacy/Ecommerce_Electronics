@@ -145,3 +145,29 @@ body {
 .cart-badge-update {
   animation: badgePulse 0.3s ease-in-out;
 }
+
+
+.is-invalid {
+  border-color: #dc3545 !important;
+  background-image: none !important;
+}
+
+.text-danger {
+  animation: fadeIn2 0.3s ease-in-out;
+}
+
+@keyframes fadeIn2 {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-control:focus {
+  border-color: #ff8c00;
+  box-shadow: 0 0 0 0.2rem rgba(255, 140, 0, 0.25);
+}
