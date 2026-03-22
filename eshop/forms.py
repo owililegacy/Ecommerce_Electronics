@@ -32,11 +32,6 @@ class UserRegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs.update({
-                'class': 'form-control w-100',
-                'placeholder': field.label
-            })
 
         # Customize labels
         self.fields['username'].label = "Username"
@@ -44,6 +39,12 @@ class UserRegisterForm(UserCreationForm):
         self.fields['password1'].label = "Password"
         self.fields['password2'].label = "Confirm Password"
         self.fields['phone_number'].label = "Phone Number (Optional)"
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'ring-none',
+                'placeholder': field.label
+            })
 
     def clean_email(self):
         """
