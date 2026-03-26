@@ -117,7 +117,7 @@ def profile_view(request):
     """
     Display user profile with recent orders and reviews
     """
-    user = User.objects.get(pk=request.user.pk)  # Refresh user data from DB    
+    user = User.objects.get(pk=request.user.pk)  # Refresh user data from DB
 
     # Get user's orders
     recent_orders = (
@@ -138,7 +138,7 @@ def profile_view(request):
         Order.objects.filter(user=user).count()
     )
     total_reviews = ProductReview.objects.filter(user=user).count()
-    
+
     context = {
         "profile": user,
         "recent_orders": recent_orders,
@@ -156,11 +156,13 @@ def update_profile_view(request):
     Handle profile update
     """
     if request.method == "POST":
-        form = UserProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        form = UserProfileUpdateForm(
+            request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
             form.save()
-            messages.success(request, "Your profile has been updated successfully!")
+            messages.success(
+                request, "Your profile has been updated successfully!")
             return redirect("eshop:profile")
         else:
             # Add form errors to messages
@@ -184,7 +186,8 @@ def change_password_view(request):
             user = form.save()
             # Update session to keep user logged in
             update_session_auth_hash(request, user)
-            messages.success(request, "Your password was successfully updated!")
+            messages.success(
+                request, "Your password was successfully updated!")
             return redirect("eshop:profile")
         else:
             for field, errors in form.errors.items():
@@ -242,7 +245,8 @@ def newsletter_toggle_view(request):
             if request.user.newsletter_subscribed
             else "unsubscribed from"
         )
-        messages.success(request, f"You have successfully {status} our newsletter!")
+        messages.success(
+            request, f"You have successfully {status} our newsletter!")
 
     return redirect("eshop:profile")
 
@@ -254,7 +258,8 @@ def home(request):
 
 # products functions
 def product_list(request):
-    products = Product.objects.filter(available=True)  # Only show available products
+    products = Product.objects.filter(
+        available=True)  # Only show available products
     context = {"products": products}
     return render(request, "eshop/product_list.html", context)
 
@@ -301,7 +306,8 @@ def view_cart(request):
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
-    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product)
+    cart_item, item_created = CartItem.objects.get_or_create(
+        cart=cart, product=product)
 
     if not item_created:
         cart_item.quantity += 1
@@ -324,8 +330,10 @@ def remove_from_cart(request, cart_item_id):
 @login_required
 def update_cart(request, cart_item_id):
     try:
-        cart_item = CartItem.objects.get(pk=cart_item_id, cart__user=request.user)
-        quantity = int(request.POST.get("quantity", 1))  # Get quantity from form
+        cart_item = CartItem.objects.get(
+            pk=cart_item_id, cart__user=request.user)
+        # Get quantity from form
+        quantity = int(request.POST.get("quantity", 1))
         if quantity > 0:
             cart_item.quantity = quantity
             cart_item.save()
@@ -345,8 +353,7 @@ def create_order(request):
         if form.is_valid():
             order = Order.objects.create(
                 user=request.user,
-                first_name=form.cleaned_data["first_name"],
-                last_name=form.cleaned_data["last_name"],
+                name=form.cleaned_data["name"],
                 email=form.cleaned_data["email"],
                 address=form.cleaned_data["address"],
                 postal_code=form.cleaned_data["postal_code"],
