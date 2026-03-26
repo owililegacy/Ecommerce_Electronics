@@ -87,3 +87,4 @@ Thumbs.db
 .kateproject.notes
 integration_plan*
 package-lock.json
+migrations/

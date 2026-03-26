@@ -178,8 +178,7 @@ class Order(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
     )
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    name= models.CharField(max_length=255)
     email = models.EmailField()
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=20)
